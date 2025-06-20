@@ -1,0 +1,14 @@
+{
+  "name": "niconicolive-schedule",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "axios": "^1.10.0",
+    "cheerio": "^1.1.0",
+    "express": "^5.1.0",
+    "ics": "^3.8.1"
+  }
+}
