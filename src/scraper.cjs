@@ -4,10 +4,6 @@ const vm = require('vm');
 
 const targets = [
   {
-    url: 'https://anime.nicovideo.jp/live/',
-    key: 'live_reserved'
-  },
-  {
     url: 'https://anime.nicovideo.jp/live/reserved-regular.html',
     key: 'live_reserved_regular'
   },
