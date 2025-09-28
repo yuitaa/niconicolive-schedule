@@ -1,14 +1,14 @@
-const express = require('express');
-const { createEvents } = require('ics');
-const { main: scrape } = require('./scraper.cjs');
+import express from "express";
+import { createEvents } from "ics";
+import { scrape } from "./scraper.mjs";
 
 const app = express();
 
-app.get('/calendar.ics', async (req, res) => {
+app.get("/calendar.ics", async (req, res) => {
   try {
     const events = await scrape();
 
-    const formattedEvents = events.map(e => {
+    const formattedEvents = events.map((e) => {
       const date = new Date(e.start);
       date.setHours(date.getHours() - 9);
 
@@ -20,25 +20,28 @@ app.get('/calendar.ics', async (req, res) => {
           date.getMonth() + 1,
           date.getDate(),
           date.getHours(),
-          date.getMinutes()
+          date.getMinutes(),
         ],
-        duration: { minutes: 30 }
+        duration: { minutes: 30 },
       };
     });
 
     createEvents(formattedEvents, (error, value) => {
       if (error) {
         console.error(error);
-        return res.status(500).send('Failed to generate calendar');
+        return res.status(500).send("Failed to generate calendar");
       }
 
-      res.setHeader('Content-Disposition', 'attachment; filename="calendar.ics"');
-      res.setHeader('Content-Type', 'text/calendar; charset=utf-8');
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="calendar.ics"'
+      );
+      res.setHeader("Content-Type", "text/calendar; charset=utf-8");
       res.send(value);
     });
   } catch (err) {
     console.error(err);
-    res.status(500).send('Internal error');
+    res.status(500).send("Internal error");
   }
 });
 
