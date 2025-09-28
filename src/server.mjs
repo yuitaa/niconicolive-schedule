@@ -13,7 +13,6 @@ app.get("/calendar.ics", async (req, res) => {
 
     const formattedEvents = events.map((e) => {
       const date = new Date(e.start);
-      date.setHours(date.getHours() - 9);
 
       return {
         title: e.title,
