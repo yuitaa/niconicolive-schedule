@@ -9,6 +9,8 @@ app.get("/calendar.ics", async (req, res) => {
     const calendarType = req.query.type || "all";
     const events = await scrape(calendarType);
 
+    const filename = `calendar-${calendarType}.ics`;
+
     const formattedEvents = events.map((e) => {
       const date = new Date(e.start);
       date.setHours(date.getHours() - 9);
@@ -35,7 +37,7 @@ app.get("/calendar.ics", async (req, res) => {
 
       res.setHeader(
         "Content-Disposition",
-        'attachment; filename="calendar.ics"'
+        `attachment; filename="${filename}"`
       );
       res.setHeader("Content-Type", "text/calendar; charset=utf-8");
       res.send(value);
