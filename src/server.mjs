@@ -1,12 +1,13 @@
 import express from "express";
 import { createEvents } from "ics";
-import { scrape } from "./scraper.mjs";
+import { main as scrape } from "./scraper.mjs";
 
 const app = express();
 
 app.get("/calendar.ics", async (req, res) => {
   try {
-    const events = await scrape();
+    const calendarType = req.query.type || "all";
+    const events = await scrape(calendarType);
 
     const formattedEvents = events.map((e) => {
       const date = new Date(e.start);

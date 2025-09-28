@@ -1,15 +1,17 @@
 import axios from "axios";
-import cheerio from "cheerio";
+import * as cheerio from "cheerio";
 import vm from "vm";
 
 const targets = [
   {
     url: "https://anime.nicovideo.jp/live/reserved-regular.html",
     key: "live_reserved_regular",
+    type: "regular",
   },
   {
     url: "https://anime.nicovideo.jp/live/reserved-ikkyo.html",
     key: "live_reserved_ikkyo",
+    type: "ikkyo",
   },
 ];
 
@@ -57,10 +59,15 @@ async function extractFromPage({ url, key }) {
   }));
 }
 
-export async function scrape() {
+export async function main(calendarType = "all") {
   let allEvents = [];
 
-  for (const target of targets) {
+  const targetsToFetch =
+    calendarType === "all"
+      ? targets
+      : targets.filter((t) => t.type === calendarType);
+
+  for (const target of targetsToFetch) {
     const events = (await extractFromPage(target)).filter((e) => {
       return !e.title.includes("【ニコニコプレミアム会員限定】");
     });
